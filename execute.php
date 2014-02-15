@@ -212,7 +212,7 @@
 							$this->curl_resource->get( sprintf( '%s/email.php?id=%s', $this->provider_address, $url[5] ) );
 							$this->html_resource->load( $this->curl_resource->response );
 							# parsing the trial serial
-							$license = $this->html_resource->find( 'span', 0 )->parent()->plaintext;
+							$license = preg_match( '/\w{4}-\w{4}-\w{4}-\w{4}/', $this->html_resource->find( 'span', 0 )->parent()->plaintext );
 						echo "DONE !";
 					}
 				} while ( empty( $license ) );
@@ -220,7 +220,7 @@
 			# End
 
 			# return the 7-DAYS pro serial we want, DONE !
-			$this->return_result =  preg_replace( '/\s(?=\s)/', '', $license );
+			$this->return_result = $license[0];
 			return $this->return_result;
 		}
 	}
